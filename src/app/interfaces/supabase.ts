@@ -3,7 +3,7 @@
  * Do not make direct changes to the file.
  */
 
-export interface paths {
+ export interface paths {
   "/": {
     get: {
       responses: {
@@ -203,6 +203,7 @@ export interface paths {
           public?: parameters["rowFilter.artist.public"];
           bandcamp?: parameters["rowFilter.artist.bandcamp"];
           ts?: parameters["rowFilter.artist.ts"];
+          bandcamp_iframe?: parameters["rowFilter.artist.bandcamp_iframe"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -269,6 +270,7 @@ export interface paths {
           public?: parameters["rowFilter.artist.public"];
           bandcamp?: parameters["rowFilter.artist.bandcamp"];
           ts?: parameters["rowFilter.artist.ts"];
+          bandcamp_iframe?: parameters["rowFilter.artist.bandcamp_iframe"];
         };
         header: {
           /** Preference */
@@ -299,6 +301,7 @@ export interface paths {
           public?: parameters["rowFilter.artist.public"];
           bandcamp?: parameters["rowFilter.artist.bandcamp"];
           ts?: parameters["rowFilter.artist.ts"];
+          bandcamp_iframe?: parameters["rowFilter.artist.bandcamp_iframe"];
         };
         body: {
           /** artist */
@@ -1228,6 +1231,26 @@ export interface paths {
       };
     };
   };
+  "/rpc/unaccent": {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            /** Format: text */
+            "": string;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
   "/rpc/show_limit": {
     post: {
       parameters: {
@@ -1271,7 +1294,7 @@ export interface paths {
         body: {
           args: {
             /** Format: integer */
-            distance: number;
+            search_radius: number;
             /** Format: double precision */
             lat: number;
             /** Format: double precision */
@@ -1419,6 +1442,8 @@ export interface definitions {
     bandcamp?: string;
     /** Format: tsvector */
     ts?: string;
+    /** Format: text */
+    bandcamp_iframe?: string;
   };
   asset: {
     /**
@@ -1809,6 +1834,8 @@ export interface parameters {
   "rowFilter.artist.bandcamp": string;
   /** Format: tsvector */
   "rowFilter.artist.ts": string;
+  /** Format: text */
+  "rowFilter.artist.bandcamp_iframe": string;
   /** @description asset */
   "body.asset": definitions["asset"];
   /** Format: uuid */

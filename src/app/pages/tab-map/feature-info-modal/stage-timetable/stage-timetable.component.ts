@@ -40,7 +40,11 @@ export class StageTimetableComponent implements OnInit {
         properties: {
           ...stage.properties,
           // JSON.parse is used since Maplibre stringifies nested properties in GeoJSON maplayers
-          timetables: JSON.parse(stage.properties.timetables as any) as TimetableDay[]
+          timetables: (JSON.parse(stage.properties.timetables as any) as TimetableDay[])
+            .map(day => ({
+              ...day,
+              timetable: day.timetable.sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime())
+            }))
         }
       }))
     );
