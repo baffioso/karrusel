@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SegmentCustomEvent } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import { map, take, tap, withLatestFrom } from 'rxjs/operators';
 import isWithinInterval from 'date-fns/isWithinInterval';
 import { TimetableStateService } from './state/timetable-state.service';
 import { DayEventStageTimetable, EventTimetable } from '@app/interfaces/day-event-stage-timetable';
@@ -59,7 +59,7 @@ export class TabTimetablePage implements OnInit {
       map(([days, ]) => days)
     )
 
-    this.events$ = this.timetableStateService.events$.pipe(
+    this.timetableStateService.events$.pipe(
       withLatestFrom(this.route.queryParamMap),
       // Handle url if event query params exists
       tap(([events, param]) => {
@@ -69,8 +69,9 @@ export class TabTimetablePage implements OnInit {
           this.timetableStateService.selectEventId(events[0].event_id)
         }
       }),
-      map(([events,]) => events)
-    )
+      map(([events,]) => events),
+      take(1)
+    ).subscribe()
 
   }
 
